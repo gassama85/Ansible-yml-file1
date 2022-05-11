@@ -1,0 +1,23 @@
+---
+- name: Configuring Apache
+  become: true
+  hosts: all
+  tasks:
+    - name: Install Apache
+      apt:
+        - name: apache2
+          state: present
+          update_cache: yes
+    - name: Edit the Index.html File
+      copy:
+       content: "Welcome to SKYDA"
+       dest: /var/www/html/index.html
+    - name: restart apache
+      service:
+       name: apache2
+       state: restarted
+    - name: check url response of Apache on Managednode1
+      uri:
+       url: http://172.31.17.27
+       status_code: 200
+...
